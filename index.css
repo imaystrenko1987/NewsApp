@@ -1,5 +1,5 @@
 .logo-image{
-	width:150px;
+	width:350px;
 }
 
 .logo-image.hidden{
@@ -7,7 +7,7 @@
 }
 
 .filter-item{
-	padding: 2px;
+	padding: 5px 2px;
 }
 
 .filter-item button, 
