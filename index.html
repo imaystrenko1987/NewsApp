@@ -18,10 +18,19 @@
 				<option>30</option>
 			</select>
 		</div>
+
 		<div class="filter-item">
 			<button id="searchButton">Search</button>
 		</div>
+		<div id="pagination">
+			<button id="btnPrev">Prev</button>
+			<button id="btnNext">Next</button>
+			page: <span id="page"></span>
+		</div>
+		
 		<div id="content"></div>
+		
+		<script src='pagination.js'></script>
 		<script src='newsparser.js'></script>
 		<script src='index.js'></script>
 	</body>

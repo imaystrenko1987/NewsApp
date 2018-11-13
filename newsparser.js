@@ -19,6 +19,13 @@ class NewsParser{
 		this.loadSources();
 	}
 	
+	initPagination(){
+		if(!this.paging){
+			this.paging = new Pagination(this.totalResults, this.recordsCountElem.value, this.getNews.bind(this));
+			this.paging.init();
+		}
+	}
+	
 	clearContent(){
 		this.contentElem.innerHTML = "";
 	}
@@ -32,11 +39,22 @@ class NewsParser{
 	}
 	
 	loadSources(){
-		this.clearContent();
+		this.paging = null;
+		let errorHappens = false;
 		let req = new Request(`${this.apiUrl}/sources?apiKey=${this.apiKey}`);
 		fetch(req)
+		.then(r => {
+			if (!r.ok) {
+				errorHappens = true;
+			}
+			return r;
+		})
 		.then(response => response.json())
 		.then(jsonResult => {
+			if(errorHappens){
+				this.setContent(jsonResult.message);
+				return;
+			}
 			let channelElem = document.getElementById("channel");
 			let sources = jsonResult.sources;
 			sources.forEach(source => {
@@ -49,13 +67,27 @@ class NewsParser{
 		});	
 	}
 	
-	getNews(){
+	getNews(pageNumber){
+		this.clearContent();
 		let count = this.recordsCountElem.value;
 		let channel = this.channelElem.value;
-		let req = new Request(`${this.apiUrl}/everything?apiKey=${this.apiKey}&pageSize=${count}&sources=${channel}`);
+		let pageQsParam = pageNumber ? `&page=${pageNumber}` : "";
+		let req = new Request(`${this.apiUrl}/everything?apiKey=${this.apiKey}&pageSize=${count}&sources=${channel}${pageQsParam}`);
+		let errorHappens = false;
 		fetch(req)
+		.then(r => {
+			if (!r.ok) {
+				errorHappens = true;
+			}
+			return r;
+		})
 		.then(response => response.json())
 		.then(jsonResult => {
+			if(errorHappens){
+				this.setContent(jsonResult.message);
+				return;
+			}
+			this.totalResults = jsonResult.totalResults;
 			let articles = jsonResult.articles;
 			if(articles.length === 0){
 				this.setContent("Try another category.");
@@ -64,12 +96,13 @@ class NewsParser{
 			articles.forEach(article => {
 				this.createArticle(article);
 			});
-		});	
+		})
+		.then(()=> this.initPagination());
 	}
 	
 	createArticle(articleJson){
 		let replaceItems = new Map();
-		replaceItems.set("{{urlToImage}}", articleJson.urlToImage);
+		replaceItems.set("{{urlToImage}}", articleJson.urlToImage ? articleJson.urlToImage : "");
 		replaceItems.set("{{logoImageClass}}", articleJson.urlToImage ? "" : "hidden");
 		replaceItems.set("{{content}}", articleJson.content ? articleJson.content : "comming soon...");
 		replaceItems.set("{{title}}", articleJson.title);
