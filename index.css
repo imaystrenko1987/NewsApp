@@ -10,7 +10,8 @@
 	padding: 2px;
 }
 
-.filter-item button{
+.filter-item button, 
+.pagination button{
 	border-radius: 2px;
 	border: 1px solid #DFDFDF;
 }

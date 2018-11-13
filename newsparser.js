@@ -53,6 +53,7 @@ class NewsParser{
 		.then(jsonResult => {
 			if(errorHappens){
 				this.setContent(jsonResult.message);
+				this.initPagination();
 				return;
 			}
 			let channelElem = document.getElementById("channel");
@@ -85,6 +86,7 @@ class NewsParser{
 		.then(jsonResult => {
 			if(errorHappens){
 				this.setContent(jsonResult.message);
+				this.initPagination();
 				return;
 			}
 			this.totalResults = jsonResult.totalResults;
