@@ -1,70 +1,28 @@
+<!DOCTYPE html>
 <html>
+	<meta name="viewport" content="width=device-width">
 	<head>
-		<script>
-			function loadSources(){
-				var url = "https://newsapi.org/v2/sources?apiKey=c86673b92a5d4a768d8fb20b91eb795f";
-				var req = new Request(url);
-				fetch(req)
-				.then(response => response.json())
-				.then(function(jsonResult) {
-					var channelElem = document.getElementById("channel");
-					var sources = jsonResult.sources;
-					for(let i = 0; i < sources.length; i++){
-						var source = sources[i];
-						var option = document.createElement("option");
-						option.text = source.name;
-						option.value = source.id;
-						channelElem.appendChild(option);
-					}
-					getNews();
-				});	
-			}
-			
-			function getNews(){
-				document.getElementById("content").innerHTML = "";
-				var channelElem = document.getElementById("channel");
-				var recordsCountElem = document.getElementById("recordsCount");
-				var count = recordsCountElem.value;
-				var channel = channelElem.value;
-				var url = `https://newsapi.org/v2/everything?apiKey=c86673b92a5d4a768d8fb20b91eb795f${channel ? "&sources=" + channel : ""}&pageSize=${count}`;
-				var req = new Request(url);
-				fetch(req)
-				.then(response => response.json())
-				.then(function(jsonResult) {
-					var articles = jsonResult.articles;
-					if(articles.length === 0){
-						document.getElementById("content").innerHTML = "Try another category.";
-						return;
-					}
-					for(let i = 0; i < articles.length; i++){
-						createArticle(articles[i]);
-					}
-				});	
-			}
-						
-			function createArticle(articleJson){
-				var article = document.createElement("article");
-				var imageHtml = articleJson.urlToImage ? `<img alt='' style='width:150px;' src='${articleJson.urlToImage}'/>` : "";
-				article.innerHTML = `<h1>${articleJson.title}</h1><div>${imageHtml} <p> ${articleJson.content ? articleJson.content : 'comming soon...'}</p></div>`;
-				document.getElementById("content").append(article);
-			}
-		</script>
+		<link rel="stylesheet" href="index.css">
 	</head>
-
 	<body>
-		<label>Select Channel:</label>
-		<select id='channel'>
-	    </select>
-		<label>Records to display:</label>
-		<select id='recordsCount'>
-			<option>10</option>
-			<option>20</option>
-			<option>30</option>
-		</select>
-		<button onclick='getNews();'>Search</button>
+		<div class="filter-item">
+			<label>Select Channel:</label>
+			<select id='channel'>
+			</select>
+		</div>
+		<div class="filter-item">
+			<label>Records to display:</label>
+			<select id='recordsCount'>
+				<option>10</option>
+				<option>20</option>
+				<option>30</option>
+			</select>
+		</div>
+		<div class="filter-item">
+			<button id="searchButton">Search</button>
+		</div>
 		<div id="content"></div>
-		<script>
-			loadSources();
-		</script>
+		<script src='newsparser.js'></script>
+		<script src='index.js'></script>
 	</body>
 </html>

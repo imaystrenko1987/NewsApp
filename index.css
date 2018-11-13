@@ -1,0 +1,16 @@
+.logo-image{
+	width:150px;
+}
+
+.logo-image.hidden{
+	display: none;
+}
+
+.filter-item{
+	padding: 2px;
+}
+
+.filter-item button{
+	border-radius: 2px;
+	border: 1px solid #DFDFDF;
+}
