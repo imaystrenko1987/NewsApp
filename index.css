@@ -8,6 +8,7 @@
 
 .filter-item{
 	padding: 5px 2px;
+	width: 300px;
 }
 
 .filter-item button, 

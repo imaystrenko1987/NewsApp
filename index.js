@@ -20,8 +20,7 @@
 		
 		initPagination(){
 			if(!this.paging){
-				let callbacks = [this.getNews.bind(this)]
-				this.paging = new Pagination(this.totalResults, this.recordsCountElem.value, ...callbacks);
+				this.paging = new Pagination(this.totalResults, this.recordsCountElem.value, this.getNews.bind(this));
 				this.paging.init();
 			}
 		}
@@ -35,28 +34,15 @@
 		}
 		
 		bindEvents(){
-			this.channelElem.onchange = this.loadSources.bind(this);
-			this.recordsCountElem.onchange = this.loadSources.bind(this);
+			this.channelElem.onchange = this.getNews.bind(this);
+			this.recordsCountElem.onchange = this.getNews.bind(this);
 		}
 		
-		loadSources(){
+		async loadSources(){
 			this.paging = null;
-			let errorHappens = false;
-			let req = new Request(`${this.apiUrl}/sources?apiKey=${this.apiKey}`);
-			fetch(req)
-			.then(r => {
-				if (!r.ok) {
-					errorHappens = true;
-				}
-				return r;
-			})
-			.then(response => response.json())
-			.then(jsonResult => {
-				if(errorHappens){
-					this.setContent(jsonResult.message);
-					this.initPagination();
-					return;
-				}
+			try {
+				const response = await fetch(`${this.apiUrl}/sources?apiKey=${this.apiKey}`);
+				let jsonResult = await response.json();
 				let channelElem = document.getElementById("channel");
 				let sources = jsonResult.sources;
 				sources.forEach(source => {
@@ -66,30 +52,20 @@
 					channelElem.appendChild(option);
 				});
 				this.getNews();
-			});	
+			}
+			catch (err){
+				this.setContent(jsonResult.message);
+				this.initPagination();
+			}
+				
 		}
 		
-		getNews(pageNumber){
+		async getNews(pageNumber){
 			this.clearContent();
-			let count, channel;
-			[count, channel] = [this.recordsCountElem.value, this.channelElem.value];
 			let pageQsParam = pageNumber ? `&page=${pageNumber}` : "";
-			let req = new Request(`${this.apiUrl}/everything?apiKey=${this.apiKey}&pageSize=${count}&sources=${channel}${pageQsParam}`);
-			let errorHappens = false;
-			fetch(req)
-			.then(r => {
-				if (!r.ok) {
-					errorHappens = true;
-				}
-				return r;
-			})
-			.then(response => response.json())
-			.then(jsonResult => {
-				if(errorHappens){
-					this.setContent(jsonResult.message);
-					this.initPagination();
-					return;
-				}
+			try {
+				const response = await fetch(`${this.apiUrl}/everything?apiKey=${this.apiKey}&pageSize=${this.recordsCountElem.value}&sources=${this.channelElem.value}${pageQsParam}`);
+				let jsonResult = await response.json();
 				this.totalResults = jsonResult.totalResults;
 				let articles = jsonResult.articles;
 				if(articles.length === 0){
@@ -100,8 +76,12 @@
 				articles.forEach(article => {
 					this.createArticle(article);
 				});
-			})
-			.then(()=> this.initPagination());
+				this.initPagination();
+			}
+			catch (err){
+				this.setContent(jsonResult.message);
+				this.initPagination();
+			}
 		}
 		
 		createArticle(articleJson){
@@ -126,11 +106,9 @@
 	}
 		
 	class Pagination{
-		constructor(totalResults, recordsPerPage, ...callbacks){
+		constructor(...rest){
 			this.currentPage = 1;
-			this.totalResults = totalResults;
-			this.recordsPerPage = recordsPerPage;
-			[this.searchCallback] = callbacks;
+			[this.totalResults, this.recordsPerPage, this.searchCallback] = rest;
 		}
 		
 		init(){
@@ -138,9 +116,11 @@
 			this.btnNext = document.getElementById("btnNext");
 			this.btnPrev = document.getElementById("btnPrev");
 			this.pageSpan = document.getElementById("page");
+			this.pageOfSpan = document.getElementById("pageOf");
 			this.btnPrev.style.display = "none";
 			this.paginationDiv.style.display = !this.totalResults ? "none" : "";
 			this.pageSpan.innerHTML = this.currentPage;
+			this.pageOfSpan.innerHTML = this.numPages;
 			this.btnNext.onclick = this.nextPage.bind(this);
 			this.btnPrev.onclick = this.prevPage.bind(this);
 		}
