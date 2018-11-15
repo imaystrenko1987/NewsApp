@@ -33,9 +33,14 @@
 			this.contentElem.innerHTML = text;
 		}
 		
+		onFilterChange(){
+			this.paging = null;
+			this.getNews();
+		}
+		
 		bindEvents(){
-			this.channelElem.onchange = this.getNews.bind(this);
-			this.recordsCountElem.onchange = this.getNews.bind(this);
+			this.channelElem.onchange = this.onFilterChange.bind(this);
+			this.recordsCountElem.onchange = this.onFilterChange.bind(this);
 		}
 		
 		async loadSources(){
@@ -118,6 +123,7 @@
 			this.pageSpan = document.getElementById("page");
 			this.pageOfSpan = document.getElementById("pageOf");
 			this.btnPrev.disabled = true;
+     		this.btnNext.disabled = this.numPages === 1;
 			this.paginationDiv.style.display = !this.totalResults ? "none" : "";
 			this.pageSpan.innerHTML = this.currentPage;
 			this.pageOfSpan.innerHTML = this.numPages;
