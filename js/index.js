@@ -117,7 +117,7 @@
 			this.btnPrev = document.getElementById("btnPrev");
 			this.pageSpan = document.getElementById("page");
 			this.pageOfSpan = document.getElementById("pageOf");
-			this.btnPrev.style.display = "none";
+			this.btnPrev.disabled = true;
 			this.paginationDiv.style.display = !this.totalResults ? "none" : "";
 			this.pageSpan.innerHTML = this.currentPage;
 			this.pageOfSpan.innerHTML = this.numPages;
@@ -145,15 +145,15 @@
 			this.searchCallback(page);
 			this.pageSpan.innerHTML = page;
 			if (page == 1){
-				this.btnPrev.style.display = "none";
+				this.btnPrev.disabled = true;
 			} else{
-				this.btnPrev.style.display = "";
+				this.btnPrev.disabled = false;
 			}
 
 			if (page == this.numPages){
-				this.btnNext.style.display = "none";
+				this.btnNext.disabled = true;
 			} else{
-				this.btnNext.style.display = "";
+				this.btnNext.disabled = false;
 			}
 		}
 
