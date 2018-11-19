@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<meta name="viewport" content="width=device-width">
+	<head>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	</head>
+	<body>
+		<div class="filter-item form-group">
+			<label>Select Channel:</label>
+			<select id='channel' class='form-control'>
+			</select>
+		</div>
+		<div class="filter-item form-group">
+			<label>Records to display:</label>
+			<select id='recordsCount' class='form-control'>
+				<option>10</option>
+				<option>20</option>
+				<option>30</option>
+			</select>
+		</div>
+		<div id="pagination" class="filter-item">
+			<button id="btnPrev" disabled='disabled' class="btn btn-primary mb-2">Prev</button>
+			<button id="btnNext" class="btn btn-primary mb-2">Next</button>
+			page: <span id="page"></span> of <span id="pageOf"></span>
+		</div>
+
+		<div class="container">
+        <div class="row" id="rowContainer">
+        </div>
+      </div>
+      <footer>
+		Api provided by <a href="https://newsapi.org/">news api</a>
+	  </footer>
+	<script type="text/javascript" src="build/bundle.js?fb24cc9a727250f5dfb5"></script></body>
+</html>

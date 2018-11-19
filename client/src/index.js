@@ -1,4 +1,5 @@
 "use strict";
+import './index.css';
 (function (){
 	class NewsParser{
 		constructor(apiUrl, apiKey) {
