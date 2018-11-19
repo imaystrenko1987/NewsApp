@@ -1,7 +1,8 @@
 const path = require("path");
-const htmlWebpackPlugin = require('html-webpack-plugin')
+const htmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
-    entry: require.resolve("./src/index.js"),
+    entry: ["./src/index.js"],
     output: {
         path: path.resolve(__dirname, "build"),
         filename: "bundle.js"

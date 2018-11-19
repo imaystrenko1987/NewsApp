@@ -1,5 +1,8 @@
 "use strict";
 import './index.css';
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
 (function (){
 	class NewsParser{
 		constructor(apiUrl, apiKey) {
@@ -48,7 +51,7 @@ import './index.css';
 			this.paging = null;
 			try {
 				const response = await fetch(`${this.apiUrl}/sources?apiKey=${this.apiKey}`);
-				let jsonResult = await response.json();
+				const jsonResult = await response.json();
 				let channelElem = document.getElementById("channel");
 				let sources = jsonResult.sources;
 				sources.forEach(source => {
@@ -57,7 +60,9 @@ import './index.css';
 					option.value = source.id;
 					channelElem.appendChild(option);
 				});
-				this.getNews();
+				
+				await this.getNews();
+				
 			}
 			catch (err){
 				this.setContent(jsonResult.message);
@@ -71,7 +76,7 @@ import './index.css';
 			let pageQsParam = pageNumber ? `&page=${pageNumber}` : "";
 			try {
 				const response = await fetch(`${this.apiUrl}/everything?apiKey=${this.apiKey}&pageSize=${this.recordsCountElem.value}&sources=${this.channelElem.value}${pageQsParam}`);
-				let jsonResult = await response.json();
+				const jsonResult = await response.json();
 				this.totalResults = jsonResult.totalResults;
 				let articles = jsonResult.articles;
 				if(articles.length === 0){
@@ -107,7 +112,7 @@ import './index.css';
 			let article = document.createElement("div");
 			article.className = "col-lg-4";
 			article.innerHTML = replacer(this.articleTmpl);
-			this.contentElem.append(article);
+			this.contentElem.appendChild(article);
 		}
 	}
 		
