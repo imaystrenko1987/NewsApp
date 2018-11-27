@@ -1,0 +1,25 @@
+$primaryBorderColor: #DFDFDF;
+$primaryBgColor: #e4e4e4;
+
+body{
+	background-color: $primaryBgColor;
+
+	.logo-image{
+		width:350px;
+	}
+
+	.logo-image.hidden{
+		display: none;
+	}
+
+	.filter-item{
+		padding: 5px 2px;
+		width: 300px;
+	}
+
+	.filter-item button, 
+	.pagination button{
+		border-radius: 2px;
+		border: 1px solid $primaryBorderColor;
+	}
+}
