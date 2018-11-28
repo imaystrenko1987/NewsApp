@@ -1,23 +1,30 @@
 const path = require("path");
-const htmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const env = process.env.NODE_ENV || 'development';
 
-module.exports = {
-    entry: ["./src/index.js", "./src/index.scss"],
+const commonConfig = {
+    mode: "development",
+    
+    entry: {
+        index: './src/index.js',
+        style: './src/index.scss'//,
+        //newsParser: './src/modules/news-parser.js'
+      },
     output: {
-        path: path.resolve(__dirname, "build"),
-        filename: "bundle.js"
+        publicPath: '/',
+        chunkFilename: '[name].[chunkhash].js',
     },
     devtool: "source-map",
     module: {
         rules: [
             {
                 test: /\.js$/,
-				exclude: /node_modules/,
-                loader: "babel-loader",
-				options: {
-				  presets: ['latest'],
-				  plugins: ['transform-runtime']
-			    }
+                exclude: /node_modules/,
+                use: [
+                    'babel-loader',
+                ],
             },
 			{
 			    test: /\.scss$/,
@@ -30,10 +37,27 @@ module.exports = {
         ]
     },
 	plugins: [
-       new htmlWebpackPlugin({
-         template: './src/index.html',
-         filename: '../index.html',
-         hash: true
-       })
+        new webpack.NamedModulesPlugin(),
+        new HtmlWebpackPlugin({
+             template: './src/index.html',
+            filename: './index.html',
+            hash: true
+        })
   ]
 };
+
+if (env === 'development') {
+    module.exports = merge(commonConfig, {
+      devtool: 'source-map',
+      devServer: {
+        contentBase: './src',
+        publicPath: '/',
+        historyApiFallback: true,
+        port: 3003
+      },      
+    });
+}
+
+if (env === 'production') {
+    module.exports = merge(commonConfig, {});
+}
