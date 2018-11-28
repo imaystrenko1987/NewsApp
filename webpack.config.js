@@ -9,8 +9,7 @@ const commonConfig = {
     
     entry: {
         index: './src/index.js',
-        style: './src/index.scss'//,
-        //newsParser: './src/modules/news-parser.js'
+        style: './src/index.scss'
       },
     output: {
         publicPath: '/',
@@ -31,9 +30,10 @@ const commonConfig = {
                 use: [
                     'style-loader', 
                     'css-loader',
-                    'sass-loader'
+                    'sass-loader',
+                    './src/modules/my-css-loader'
                 ],
-		    }
+            }
         ]
     },
 	plugins: [
@@ -53,7 +53,7 @@ if (env === 'development') {
         contentBase: './src',
         publicPath: '/',
         historyApiFallback: true,
-        port: 3003
+        port: 3000
       },      
     });
 }

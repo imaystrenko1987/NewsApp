@@ -1,7 +1,5 @@
 "use strict";
 
-//import { NewsParser } from './modules/news-parser'
-
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
     

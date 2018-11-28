@@ -86,10 +86,10 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/sass-loader/lib/loader.js!./src/index.scss":
-/*!*******************************************************************************************!*\
-  !*** ./node_modules/css-loader!./node_modules/sass-loader/lib/loader.js!./src/index.scss ***!
-  \*******************************************************************************************/
+/***/ "./node_modules/css-loader/index.js!./node_modules/sass-loader/lib/loader.js!./src/modules/my-css-loader.js!./src/index.scss":
+/*!**************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/sass-loader/lib/loader.js!./src/modules/my-css-loader.js!./src/index.scss ***!
+  \**************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -98,7 +98,7 @@ exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/li
 
 
 // module
-exports.push([module.i, "body {\n  background-color: #e4e4e4; }\n  body .logo-image {\n    width: 350px; }\n  body .logo-image.hidden {\n    display: none; }\n  body .filter-item {\n    padding: 5px 2px;\n    width: 300px; }\n  body .filter-item button,\n  body .pagination button {\n    border-radius: 2px;\n    border: 1px solid #DFDFDF; }\n", ""]);
+exports.push([module.i, "html {\n  height: 100%;\n  background: #FFF; }\n\nbody {\n  background-color: #e4e4e4; }\n  body .logo-image {\n    width: 350px; }\n  body .logo-image.hidden {\n    display: none; }\n  body .filter-item {\n    padding: 5px 2px;\n    width: 300px; }\n  body .filter-item button,\n  body .pagination button {\n    border-radius: 2px;\n    border: 1px solid #DFDFDF; }\n", ""]);
 
 // exports
 
@@ -709,7 +709,7 @@ module.exports = function (css) {
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../node_modules/css-loader!../node_modules/sass-loader/lib/loader.js!./index.scss */ "./node_modules/css-loader/index.js!./node_modules/sass-loader/lib/loader.js!./src/index.scss");
+var content = __webpack_require__(/*! !../node_modules/css-loader!../node_modules/sass-loader/lib/loader.js!./modules/my-css-loader.js!./index.scss */ "./node_modules/css-loader/index.js!./node_modules/sass-loader/lib/loader.js!./src/modules/my-css-loader.js!./src/index.scss");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 

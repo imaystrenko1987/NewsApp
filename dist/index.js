@@ -2178,19 +2178,20 @@ if (!self.fetch) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
- //import { NewsParser } from './modules/news-parser'
+
 
 __webpack_require__(/*! es6-promise */ "./node_modules/es6-promise/dist/es6-promise.js").polyfill();
 
-__webpack_require__(/*! isomorphic-fetch */ "./node_modules/isomorphic-fetch/fetch-npm-browserify.js"); // const parser = new NewsParser("https://newsapi.org/v2", "c86673b92a5d4a768d8fb20b91eb795f");
-// parser.init();
-
+__webpack_require__(/*! isomorphic-fetch */ "./node_modules/isomorphic-fetch/fetch-npm-browserify.js");
 
 document.addEventListener("DOMContentLoaded", () => {
-  const button = document.querySelector('#divideButton');
+  const button = document.querySelector('#showNewsBtn');
   button.addEventListener('click', () => {
-    __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./modules/news-parser */ "./src/modules/news-parser.js")).then(divideModule => {
-      console.log(divideModule.divide(6, 3)); // 2
+    __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./modules/news-parser */ "./src/modules/news-parser.js")).then(module => {
+      const parser = new module.NewsParser("https://newsapi.org/v2", "c86673b92a5d4a768d8fb20b91eb795f");
+      parser.init();
+      const filterContainer = document.querySelector('#filterContainer');
+      filterContainer.style.display = "";
     });
   });
 });
