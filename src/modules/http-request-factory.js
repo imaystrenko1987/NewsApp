@@ -2,6 +2,7 @@ export class HttpRequestFactory{
     constructor(apiUrl, apiKey){
         this.apiUrl = apiUrl;
         this.apiKey = apiKey;
+        
     }
 
     async get(path, queryString){

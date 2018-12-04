@@ -1,12 +1,13 @@
 import { Pagination } from './pagination'
 import { HttpRequestFactory } from './http-request-factory'
+import { HttpRequestProxy } from './http-request-proxy'
 
 export class NewsParser{
     constructor(apiUrl, apiKey) {
         this.contentElem = document.getElementById("rowContainer");
         this.channelElem =  document.getElementById("channel");
         this.recordsCountElem = document.getElementById("recordsCount");
-        this.requestFactory = new HttpRequestFactory(apiUrl, apiKey);
+        this.proxy = new HttpRequestProxy(new HttpRequestFactory(apiUrl, apiKey)).getProxyInstance();
     }
     
     get articleTmpl() {
@@ -46,7 +47,7 @@ export class NewsParser{
     async loadSources(){
         this.paging = null;
         try {
-            const jsonResult = await this.requestFactory.get("sources");
+            const jsonResult = await this.proxy.get("sources");
             let channelElem = document.getElementById("channel");
             let sources = jsonResult.sources;
             sources.forEach(source => {
@@ -70,7 +71,7 @@ export class NewsParser{
         this.clearContent();
         let pageQsParam = pageNumber ? `&page=${pageNumber}` : "";
         try {
-            const jsonResult = await this.requestFactory.get("everything", `pageSize=${this.recordsCountElem.value}&sources=${this.channelElem.value}${pageQsParam}`);
+            const jsonResult = await this.proxy.get("everything", `pageSize=${this.recordsCountElem.value}&sources=${this.channelElem.value}${pageQsParam}`);
             this.totalResults = jsonResult.totalResults;
             let articles = jsonResult.articles;
             if(articles.length === 0){
