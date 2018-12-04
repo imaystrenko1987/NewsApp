@@ -22,4 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
             })
     });
+    
+    const errorButton = document.querySelector('#tryErrorBtn');
+    errorButton.addEventListener('click', () => {debugger; throw new Error("test error") });
 });
