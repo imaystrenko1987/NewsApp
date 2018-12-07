@@ -1,13 +1,15 @@
 import { Pagination } from './pagination'
 import { HttpRequestFactory } from './http-request-factory'
 import { HttpRequestProxy } from './http-request-proxy'
+import * as actions from './actions';
 
 export class NewsParser{
-    constructor(apiUrl, apiKey) {
+    constructor(apiUrl, apiKey, store) {
         this.contentElem = document.getElementById("rowContainer");
         this.channelElem =  document.getElementById("channel");
         this.recordsCountElem = document.getElementById("recordsCount");
         this.proxy = new HttpRequestProxy(new HttpRequestFactory(apiUrl, apiKey)).getProxyInstance();
+        this.store = store;
     }
     
     get articleTmpl() {
@@ -15,14 +17,17 @@ export class NewsParser{
     }
     
     init() {
+        console.log(this.store.getState().title);
         this.bindEvents();
         this.loadSources();
     }
     
     initPagination(){
-        if(!this.paging){
-            this.paging = new Pagination(this.totalResults, this.recordsCountElem.value, this.getNews.bind(this));
-            this.paging.init();
+        let paging = this.store.getState().paging;
+        if(!paging){
+            paging = new Pagination(this.totalResults, this.recordsCountElem.value, this.getNews.bind(this));
+            paging.init();
+            this.store.dispatch(actions.setPaging(paging));
         }
     }
     
